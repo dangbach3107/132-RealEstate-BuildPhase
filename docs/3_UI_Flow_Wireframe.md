@@ -78,4 +78,4 @@ sequenceDiagram
 ## 3. Bản Vẽ Trực Quan Minh Hoạ (UI Mockup Core Feature)
 Hình ảnh dưới đây phác thảo trực quan Màn hình 2 (AI Valuation Dashboard) - trái tim của toàn bộ dự án, minh họa rõ sự chuyên nghiệp trong khâu phân tích dữ liệu và AI.
 
-![UI Mockup](/Users/ngocbach/.gemini/antigravity-ide/brain/610c4f80-8fd1-414f-9542-65b73cc60d82/ui_mockup_realestate_1781000136504.png)
+![UI Mockup](ui_mockup.png)
