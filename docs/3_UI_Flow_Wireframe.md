@@ -39,43 +39,99 @@ sequenceDiagram
     
     API-->>UI: Trả JSON {giá_tiền, text_giải_thích, confidence_interval}
     UI-->>User: Hiển thị Result Card & AI Explanation Box
-    
-    opt User muốn theo dõi căn hộ này
-        User->>UI: Bấm "Lưu vào Dashboard & Bật Alert"
-        UI->>Auth: Lưu dữ liệu vào User Profile
-    end
 ```
 
-## 2. Đặc Tả Giao Diện Các Màn Hình Chính (Wireframes)
+## 2. Bản Vẽ Cấu Trúc Giao Diện (Wireframes)
 
-Ứng dụng được thiết kế theo phong cách Dark Mode chuyên nghiệp, tối giản (Minimalism) và tập trung vào dữ liệu trực quan (Data-driven).
+Dưới đây là bản vẽ khung cấu trúc (Wireframe) chi tiết mô tả cách bố trí các thành phần (Layout) trên 3 màn hình cốt lõi của ứng dụng.
 
-### Màn hình 1: Homepage & Market Trends (Trang chủ)
-- **Header:** Logo HomeValue AI, Navigation bar (Định giá, Phân tích thị trường, Quản lý tài sản), Nút Đăng nhập.
-- **Hero Section:** Thanh tìm kiếm cực lớn ở giữa màn hình (Ví dụ: "Nhập tên khu đô thị bạn quan tâm...").
-- **Body:** 
-  - Hiển thị Biểu đồ Line Chart so sánh xu hướng giá m2 của các đại đô thị lớn trong 6 tháng qua.
-  - Danh sách Top các khu đô thị đang có lượng giao dịch và quan tâm cao nhất.
+### 2.1. Màn Hình Trang Chủ (Homepage & Market Trends)
+Màn hình đầu tiên thu hút người dùng, giúp họ có cái nhìn tổng quan về thị trường trước khi đi sâu vào định giá chi tiết.
 
-### Màn hình 2: AI Valuation Dashboard (Lõi Định Giá)
-Đây là màn hình cốt lõi nhất của hệ thống, được chia làm 2 phân khu hiển thị (Split-screen).
-- **Khu vực trái (Input Panel):**
-  - Dropdown: Chọn Đại đô thị (sẽ filter các phân khu tương ứng bên dưới).
-  - Form linh hoạt: Phân khu, Diện tích, Số tầng, View, Nội thất.
-  - Button Action: "Get Valuation" (Hiệu ứng Gradient nổi bật).
-- **Khu vực phải (Output Panel):**
-  - Text lớn hiển thị giá trị dự đoán (Ví dụ: **2.5 Tỷ VNĐ**).
-  - Biểu đồ phân bố (Bell Curve) hiển thị khoảng tin cậy (Confidence Range) để giúp người dùng hiểu rằng giá dao động theo cung cầu.
-  - Khối **AI Explanation**: Gắn kèm icon AI, chứa đoạn text giải thích rành mạch tại sao căn hộ này lại có giá đó.
+```text
++-----------------------------------------------------------------------------+
+| [Logo HomeValue AI]         [Định Giá] [Market Trends]    [ Đăng Nhập ] |
++-----------------------------------------------------------------------------+
+|                                                                             |
+|                           KHÁM PHÁ GIÁ TRỊ THỰC                             |
+|                        CĂN HỘ CỦA BẠN TRONG TÍCH TẮC                        |
+|                                                                             |
+|      [ Dropdown: Chọn Đại Đô Thị (Vinhomes Ocean Park, Smart City...) ]     |
+|      [ NÚT: BẮT ĐẦU ĐỊNH GIÁ NGAY ➔ ]                                       |
+|                                                                             |
++-----------------------------------------------------------------------------+
+| TỔNG QUAN THỊ TRƯỜNG (MARKET TRENDS)                                        |
+|                                                                             |
+|  [ Biểu Đồ Line Chart: Xu hướng giá m2 trong 6 tháng qua ]                  |
+|  | Phân khu Sapphire: Tăng 2%                                               |
+|  | Phân khu Zenpark: Đi ngang                                               |
+|                                                                             |
+|  +-----------------------+  +-----------------------+                       |
+|  | Top Căn Đang Giao Dịch|  | Phân Khu Hot Nhất     |                       |
+|  | - S2.02: 40 giao dịch |  | 1. Zenpark            |                       |
+|  | - R1.01: 25 giao dịch |  | 2. Pavilion           |                       |
+|  +-----------------------+  +-----------------------+                       |
++-----------------------------------------------------------------------------+
+| Footer: Bản quyền, Chính sách bảo mật, Liên hệ                              |
++-----------------------------------------------------------------------------+
+```
 
-### Màn hình 3: User Dashboard & Tracking (Quản Lý Tài Sản)
-- **Menu Trái:** Thông tin Profile, Danh sách Bất động sản đang theo dõi, Cài đặt thông báo.
-- **Màn hình chính:** 
-  - Danh sách dạng thẻ (Cards) các căn hộ người dùng đã từng định giá.
-  - Hiển thị nhãn xanh/đỏ báo hiệu: "Giá căn này đã tăng 5% so với tháng trước".
-  - Nút "Export Báo cáo PDF" dành riêng cho tài khoản Pro (Môi giới).
+### 2.2. Màn Hình Định Giá Cốt Lõi (Valuation Dashboard)
+Đây là trái tim của hệ thống (như trong ảnh UI Mockup), chia làm 2 cột rõ rệt để người dùng vừa thao tác vừa xem kết quả trực quan.
 
-## 3. Bản Vẽ Trực Quan Minh Hoạ (UI Mockup Core Feature)
-Hình ảnh dưới đây phác thảo trực quan Màn hình 2 (AI Valuation Dashboard) - trái tim của toàn bộ dự án, minh họa rõ sự chuyên nghiệp trong khâu phân tích dữ liệu và AI.
+```text
++-----------------------------------------------------------------------------+
+| [Logo HomeValue AI]    < Trở về trang chủ                   [ Avatar User ] |
++-----------------------------------------------------------------------------+
+| KHU VỰC NHẬP LIỆU (Trái)                | KHU VỰC KẾT QUẢ (Phải)            |
+|                                         |                                   |
+| Phân khu:                               | +-------------------------------+ |
+| [ Dropdown: Sapphire, Zenpark...  ▼ ]   | | GIÁ TRỊ ƯỚC TÍNH              | |
+|                                         | |                               | |
+| Diện tích (m2):                         | |          2.5 TỶ VNĐ           | |
+| [ Text Input: Ví dụ 54            ]     | |                               | |
+|                                         | | [ Đồ Thị Hình Chuông - Bell ] | |
+| Số tầng:                                | | [ Khoảng giá: 2.4 - 2.6 Tỷ]   | |
+| [ Dropdown: Thấp, Trung, Cao      ▼ ]   | | Độ chính xác mô hình: 95%     | |
+|                                         | +-------------------------------+ |
+| Tầm View:                               |                                   |
+| [ Dropdown: Hồ Ngọc Trai, VinUni..▼ ]   | +-------------------------------+ |
+|                                         | | [Icon Robot] PHÂN TÍCH TỪ AI  | |
+| Tình trạng nội thất:                    | | "Căn hộ này có mức giá khá cao| |
+| [ Dropdown: Trống, Cơ bản, Full   ▼ ]   | | do nằm ở phân khu Zenpark cao | |
+|                                         | | cấp và sở hữu view hồ..."     | |
+|    [ NÚT: TÍNH TOÁN GIÁ TRỊ ➔ ]         | +-------------------------------+ |
+|                                         |                                   |
+|                                         | [ NÚT: LƯU VÀO TÀI KHOẢN ]        |
++-----------------------------------------------------------------------------+
+```
+
+### 2.3. Màn Hình Quản Lý Tài Sản (User Dashboard)
+Dành cho người dùng (hoặc môi giới) đã đăng nhập để theo dõi lịch sử định giá của mình.
+
+```text
++-----------------------------------------------------------------------------+
+| [Logo HomeValue AI]                                         [ Avatar User ] |
++-----------------------------------------------------------------------------+
+| MENU TRÁI          | DANH SÁCH BẤT ĐỘNG SẢN ĐANG THEO DÕI                   |
+|                    |                                                        |
+| - Tổng quan        | +---------------------------------------------------+  |
+| - DS Định Giá      | | Căn 2PN - Phân khu Zenpark - View Hồ              |  |
+| - Cảnh Báo Giá     | | Định giá hiện tại: 2.5 Tỷ                         |  |
+| - Đăng xuất        | | Thay đổi: [Icon Mũi tên xanh] Tăng 2% so với T5   |  |
+|                    | | [ Nút: Xem lại phân tích ]  [ Nút: Xóa ]          |  |
+|                    | +---------------------------------------------------+  |
+|                    |                                                        |
+|                    | +---------------------------------------------------+  |
+|                    | | Căn Studio - Phân khu Sapphire - View Nội khu     |  |
+|                    | | Định giá hiện tại: 1.2 Tỷ                         |  |
+|                    | | Thay đổi: [Icon Mũi tên xám] Đi ngang             |  |
+|                    | | [ Nút: Xem lại phân tích ]  [ Nút: Xóa ]          |  |
+|                    | +---------------------------------------------------+  |
++-----------------------------------------------------------------------------+
+```
+
+## 3. Bản Vẽ Trực Quan Minh Hoạ (UI Mockup)
+Từ bản vẽ Wireframe khung ở phần 2.2, nhóm đã triển khai lên thiết kế UI Mockup hoàn thiện cho màn hình Valuation Dashboard để chứng minh tính khả thi về mặt thẩm mỹ.
 
 ![UI Mockup](ui_mockup.png)
