@@ -72,7 +72,7 @@ Quy ước cập nhật:
 | T-005 | PM | Team điền owner, deadline, link repo/demo, success metrics. | PM | P0 | Chưa làm |  |  |  | PM worksheet | Không còn ô owner/deadline quan trọng bị trống. | Cần PM điều phối. |
 | T-006 | Data | Thu thập/import verified transaction thật. | Data/PM | P0 | Đang mở |  |  |  | Nguồn giao dịch tin cậy | Có dữ liệu transaction đủ để calibration tốt hơn. | Rủi ro lớn nhất về độ chính xác. |
 | T-007 | Storage | Chạy migration SQLite sang MongoDB khi có URI. | Backend/Data | P1 | Chưa làm |  |  |  | MongoDB URI | Mongo có đủ collections và count không duplicate khi chạy lại. | Đã có plan. |
-| T-008 | QA | Viết demo checklist và expected Q&A. | QA/PM | P1 | Chưa làm |  |  |  | Demo scenario | Có script demo để test trước buổi trình bày. |  |
+| T-008 | QA | Viết demo checklist và expected Q&A. | QA/PM | P1 | Đã xong |  |  | `QA_TEST_CASES.md` | Demo scenario | Có test case manual để QA/PM tick pass/fail trước demo. | Cần team chạy và cập nhật trạng thái từng case. |
 
 ## 06. Data, Model & API Inventory
 
@@ -123,7 +123,7 @@ Quy ước cập nhật:
 | NEXT-002 | Test LLM production với API key/model thật. | Backend | P1 | Chưa làm | Đảm bảo response style hoạt động và câu trả lời không bịa số liệu. | 5-10 câu hỏi mẫu + expected behavior. |
 | NEXT-003 | Thu thập/import verified transaction thật. | Data/PM | P0 | Đang mở | Tăng độ tin cậy của valuation và giảm phụ thuộc listing price. | Dataset verified transaction có schema rõ và owner. |
 | NEXT-004 | Chạy Mongo migration/smoke test khi có URI. | Backend/Data | P1 | Chưa làm | Production dùng MongoDB, cần đảm bảo dữ liệu lên đúng. | Migration report + endpoint smoke pass. |
-| NEXT-005 | Viết demo checklist. | QA/PM | P1 | Chưa làm | Tránh demo lỗi flow hoặc câu trả lời không như kỳ vọng. | Demo script, bug list, pass/fail checklist. |
+| NEXT-005 | Chạy bộ test case demo trong `QA_TEST_CASES.md`. | QA/PM | P1 | Chưa chạy | Tránh demo lỗi flow hoặc câu trả lời không như kỳ vọng. | Test result pass/fail, bug list, action owner. |
 
 ## 11. Meeting Notes
 

@@ -71,6 +71,19 @@ def test_chat_greets_without_calling_valuation():
     assert body["valuation"] is None
 
 
+def test_chat_help_intent_direct():
+    response = chatbot_module.handle_chat(
+        ChatRequest(message="bạn có thể làm gì"),
+        config(),
+        DB_PATH,
+    )
+
+    assert response.intent == "help"
+    assert response.missing_fields == []
+    assert response.valuation is None
+    assert response.answer.startswith("- ")
+
+
 def test_chat_valuation_from_vietnamese_text():
     client = TestClient(app)
     response = client.post(
@@ -109,6 +122,33 @@ def test_chat_valuation_routes_answer_through_llm_prompt(monkeypatch):
     assert "Ước tính giá bán hợp lý:" in calls["context"]["example_answer"]
     assert response.valuation is not None
     assert calls["context"]["sample_size"] == response.valuation["sample_size"]
+
+
+def test_chat_trend_intent_direct():
+    response = chatbot_module.handle_chat(
+        ChatRequest(message="xu hướng thị trường Vinhomes Smart City căn hộ"),
+        config(),
+        DB_PATH,
+    )
+
+    assert response.intent == "trend"
+    assert response.data is not None
+    assert response.data["project"] == "Vinhomes Smart City"
+    assert "windows" in response.data
+    assert response.answer.startswith("- ")
+
+
+def test_chat_snapshot_intent_direct():
+    response = chatbot_module.handle_chat(
+        ChatRequest(message="bảng giá tham khảo Vinhomes Smart City căn hộ"),
+        config(),
+        DB_PATH,
+    )
+
+    assert response.intent == "snapshot"
+    assert response.data is not None
+    assert "reference_price_snapshots" in response.data
+    assert response.answer.startswith("- ")
 
 
 def test_chat_rent_valuation_uses_structured_answer_format():
