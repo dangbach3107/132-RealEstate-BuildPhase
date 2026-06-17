@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HomeValue AI - Vinhomes Hà Nội</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">
+            <i data-lucide="building-2"></i>
+          </span>
+          <div>
+            <h1>HomeValue AI</h1>
+            <p>Vinhomes Hà Nội</p>
+          </div>
+        </div>
+
+        <div class="top-actions">
+          <span id="apiStatus" class="status-pill status-wait">Đang kiểm tra API</span>
+          <button id="refreshMarket" class="icon-button secondary" type="button" title="Tải lại dữ liệu thị trường">
+            <i data-lucide="refresh-cw"></i>
+            <span>Tải lại</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="dashboard">
+        <section class="surface chat-panel" aria-labelledby="chatTitle">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Chat</span>
+              <h2 id="chatTitle">Trợ lý định giá</h2>
+              <p id="chatHistoryMeta">Chưa có lịch sử chat.</p>
+            </div>
+            <div class="panel-actions">
+              <button id="samplePrompt" class="icon-button ghost" type="button" title="Điền ví dụ">
+                <i data-lucide="wand-2"></i>
+                <span>Ví dụ</span>
+              </button>
+              <button id="clearChat" class="icon-button danger" type="button" title="Xóa lịch sử chat">
+                <i data-lucide="trash-2"></i>
+                <span>Xóa</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="chatLog" class="chat-log" aria-live="polite"></div>
+
+          <form id="chatForm" class="chat-form">
+            <textarea id="chatMessage" rows="3" placeholder="Hỏi về giá bán, giá thuê hoặc xu hướng trong khu..."></textarea>
+            <button class="primary-button" type="submit">
+              <i data-lucide="send"></i>
+              <span>Gửi</span>
+            </button>
+          </form>
+        </section>
+
+        <section class="surface form-panel" aria-labelledby="formTitle">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Định giá</span>
+              <h2 id="formTitle">Thông tin căn</h2>
+            </div>
+            <button id="resetForm" class="icon-button ghost" type="button" title="Xóa form">
+              <i data-lucide="rotate-ccw"></i>
+              <span>Xóa</span>
+            </button>
+          </div>
+
+          <form id="valuationForm" class="valuation-form">
+            <fieldset class="segmented" aria-label="Mục đích">
+              <label>
+                <input type="radio" name="purpose" value="sale" checked />
+                <span>Bán</span>
+              </label>
+              <label>
+                <input type="radio" name="purpose" value="rent" />
+                <span>Thuê</span>
+              </label>
+            </fieldset>
+
+            <div class="field-grid">
+              <label class="wide">
+                <span>Dự án</span>
+                <select id="project" name="project" required></select>
+              </label>
+              <label>
+                <span>Loại hình</span>
+                <select id="propertyType" name="property_type" required>
+                  <option value="apartment">Căn hộ</option>
+                  <option value="villa">Biệt thự</option>
+                  <option value="townhouse">Liền kề</option>
+                  <option value="shophouse">Shophouse</option>
+                  <option value="house">Nhà phố</option>
+                  <option value="other">Khác</option>
+                </select>
+              </label>
+              <label>
+                <span>Diện tích m²</span>
+                <input id="areaM2" name="area_m2" type="number" min="1" step="0.1" value="54.2" required />
+              </label>
+              <label>
+                <span>Phòng ngủ</span>
+                <input id="bedrooms" name="bedrooms" type="number" min="0" step="1" value="2" />
+              </label>
+              <label>
+                <span>View</span>
+                <select id="view" name="view">
+                  <option value="">Chưa rõ</option>
+                  <option value="noi khu">Nội khu</option>
+                  <option value="cong vien">Công viên</option>
+                  <option value="ho">Hồ</option>
+                  <option value="thanh pho">Thành phố</option>
+                </select>
+              </label>
+              <label>
+                <span>Nội thất</span>
+                <select id="furniture" name="furniture">
+                  <option value="">Chưa rõ</option>
+                  <option value="ban giao co ban">Bàn giao cơ bản</option>
+                  <option value="full">Full nội thất</option>
+                  <option value="trong">Trống</option>
+                </select>
+              </label>
+            </div>
+
+            <button id="runValuation" class="primary-button full-width" type="submit">
+              <i data-lucide="calculator"></i>
+              <span>Định giá ngay</span>
+            </button>
+          </form>
+        </section>
+
+        <section class="surface result-panel" aria-labelledby="resultTitle">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Kết quả</span>
+              <h2 id="resultTitle">Khoảng giá hợp lý</h2>
+            </div>
+            <span id="resultMeta" class="result-meta">Chưa có lần định giá nào trong phiên này.</span>
+          </div>
+
+          <div class="result-layout">
+            <div class="estimate-focus">
+              <span>P50 hợp lý</span>
+              <strong id="p50Value">-</strong>
+            </div>
+
+            <div class="metric-strip">
+              <div class="metric">
+                <span>P10</span>
+                <strong id="p10Value">-</strong>
+              </div>
+              <div class="metric">
+                <span>P90</span>
+                <strong id="p90Value">-</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-area">
+            <canvas id="valuationChart" width="640" height="220" aria-label="Khoảng định giá P10 P50 P90"></canvas>
+          </div>
+
+          <div class="signal-grid">
+            <div>
+              <span class="label">Độ tin cậy</span>
+              <strong id="confidenceValue">-</strong>
+            </div>
+            <div>
+              <span class="label">Mẫu so sánh</span>
+              <strong id="sampleValue">-</strong>
+            </div>
+            <div>
+              <span class="label">Dữ liệu mới nhất</span>
+              <strong id="freshnessValue">-</strong>
+            </div>
+          </div>
+
+          <div class="factor-box">
+            <h3>Yếu tố ảnh hưởng</h3>
+            <ul id="factorList">
+              <li>Chạy định giá để xem các yếu tố kéo giá lên/xuống.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="surface market-panel" aria-labelledby="marketTitle">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Thị trường</span>
+              <h2 id="marketTitle">Xu hướng giá</h2>
+            </div>
+          </div>
+
+          <div id="trendGrid" class="trend-grid">
+            <div class="empty-state">Chưa tải trend.</div>
+          </div>
+        </section>
+
+        <section class="surface comps-panel" aria-labelledby="compsTitle">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Comps</span>
+              <h2 id="compsTitle">Căn tương đồng</h2>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tin</th>
+                  <th>Dự án</th>
+                  <th>DT</th>
+                  <th>PN</th>
+                  <th>Giá</th>
+                  <th>Điểm</th>
+                </tr>
+              </thead>
+              <tbody id="compRows">
+                <tr>
+                  <td colspan="6">Chạy định giá để xem căn so sánh.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
