@@ -1,0 +1,56 @@
+greeting_phrases:
+  - hi
+  - hello
+  - hey
+  - alo
+  - chao
+  - xin chao
+  - chao ban
+  - hello ban
+  - hi ban
+greeting_starts:
+  - hi
+  - hello
+  - hey
+  - alo
+  - chao
+thanks_phrases:
+  - cam on
+  - thanks
+  - thank you
+  - tks
+  - ok
+  - oke
+  - okay
+help_terms:
+  - help
+  - huong dan
+  - cach dung
+  - lam duoc gi
+  - ban biet gi
+  - co the lam gi
+trend_terms:
+  - xu huong
+  - trend
+  - tang giam
+  - bien dong
+  - thi truong
+snapshot_terms:
+  - bang gia
+  - snapshot
+  - tham khao
+  - gia niem yet
+domain_terms:
+  - ban
+  - thue
+  - gia
+  - dinh
+  - can
+  - canho
+  - vinhomes
+  - ocean
+  - smart
+  - times
+  - royal
+  - trend
+  - m2

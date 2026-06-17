@@ -3,10 +3,25 @@ from pydantic import BaseModel
 import joblib
 import os
 import pandas as pd
+from pathlib import Path
 from openai import OpenAI
 from dotenv import load_dotenv
 
-load_dotenv()
+
+def load_env() -> None:
+    env_file = os.getenv("VALUATION_ENV_FILE")
+    candidates = []
+    if env_file:
+        candidates.append(Path(env_file))
+    root = Path(__file__).resolve().parents[2]
+    candidates.extend([root / ".env", root.parent / "data_analysis" / ".env"])
+    for candidate in candidates:
+        if candidate.exists():
+            load_dotenv(candidate, override=False)
+            return
+
+
+load_env()
 
 app = FastAPI(title="Real Estate Valuation API (MVP)")
 
@@ -20,7 +35,22 @@ class PropertyInput(BaseModel):
 
 model = None
 encoders = None
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY", "dummy_key"))
+
+
+def get_openai_client():
+    api_key = os.getenv("OPENAI_API_KEY")
+    return OpenAI(api_key=api_key) if api_key else None
+
+
+def chat_completion_kwargs(model_name: str, messages: list[dict[str, str]]) -> dict:
+    kwargs = {"model": model_name, "messages": messages}
+    normalized = model_name.lower()
+    if normalized.startswith(("gpt-5", "o1", "o3", "o4")) or "gpt-5" in normalized:
+        kwargs["max_completion_tokens"] = int(os.getenv("OPENAI_MAX_TOKENS", "200"))
+    else:
+        kwargs["max_tokens"] = int(os.getenv("OPENAI_MAX_TOKENS", "200"))
+        kwargs["temperature"] = float(os.getenv("OPENAI_TEMPERATURE", "0.7"))
+    return kwargs
 
 @app.on_event("startup")
 def load_models():
@@ -41,8 +71,9 @@ def read_root():
     return {"message": "Welcome to Real Estate Valuation API (MVP Phase)"}
 
 def generate_explanation(prop: PropertyInput, price_bn: float) -> str:
-    # Fallback if no valid API key
-    if client.api_key == "dummy_key" or not client.api_key:
+    client = get_openai_client()
+    model_name = os.getenv("MODEL")
+    if not client or not model_name:
         return f"(Mock) Căn hộ {prop.area_m2}m2 tại {prop.phan_khu} có mức giá {price_bn} tỷ. Mức giá này phản ánh đúng giá trị thực tế do sở hữu tầm view {prop.view} và tình trạng bàn giao {prop.furniture}."
         
     try:
@@ -53,10 +84,7 @@ def generate_explanation(prop: PropertyInput, price_bn: float) -> str:
         Hãy viết 1 đoạn ngắn (khoảng 3-4 câu) giải thích cho khách hàng lý do căn hộ có mức giá này. Giọng điệu chuyên nghiệp, phân tích hợp lý theo thực tế thị trường.
         """
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.7,
-            max_tokens=200
+            **chat_completion_kwargs(model_name, [{"role": "user", "content": prompt}])
         )
         return response.choices[0].message.content.strip()
     except Exception as e:

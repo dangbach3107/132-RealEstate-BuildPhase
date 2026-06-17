@@ -1,0 +1,24 @@
+greeting: >-
+  Chào bạn, mình là HomeValue AI. Mình có thể hỗ trợ định giá bán/thuê, xem xu hướng giá và so sánh căn tương đồng trong các dự án Vinhomes Hà Nội. Bạn gửi dự án, diện tích, loại căn và mục đích bán hay thuê nhé.
+thanks: >-
+  Không có gì. Khi cần định giá căn nào, bạn gửi dự án, diện tích, số phòng ngủ và mục đích bán/thuê là mình xử lý tiếp.
+help: >-
+  Bạn có thể hỏi theo 3 kiểu: định giá một căn cụ thể, xem xu hướng thị trường hoặc tra bảng giá tham khảo. Ví dụ: Định giá bán căn hộ Vinhomes Smart City 54m2 2PN full nội thất.
+valuation_missing: >-
+  Mình cần thêm {missing_labels} để định giá sát hơn. {retrieval_hint_text} Bạn có thể gửi theo mẫu: dự án, diện tích, số phòng ngủ, loại căn và mục đích bán/thuê.
+trend_missing: >-
+  Mình cần thêm {missing_labels} để xem đúng xu hướng thị trường. {retrieval_hint_text} Bạn cho mình tên dự án hoặc khu đô thị nhé.
+snapshot_missing: >-
+  Mình cần thêm {missing_labels} để tra bảng giá tham khảo đúng dự án. {retrieval_hint_text} Bạn cho mình tên dự án hoặc khu đô thị nhé.
+valuation: >-
+  {example_answer}
+trend: >-
+  Xu hướng {project} ({property_type_label}, {purpose_label}) hiện có median 30 ngày khoảng {primary_median_text} với {primary_sample_size} mẫu. {snapshot_count_text} Đây là dữ liệu dựa trên giá rao công khai đã lọc nhiễu, nên nên dùng như tham chiếu thay vì giá chốt tuyệt đối.
+snapshot: >-
+  Mình tìm thấy {reference_count} dòng bảng giá tham khảo cho {project}. Ví dụ {first_label}: {range_text}. Các dòng này là snapshot tham khảo, không phải giao dịch chốt.
+no_snapshot: >-
+  Chưa có bảng giá tham khảo phù hợp với bộ lọc này. Bạn có thể đổi dự án, loại hình hoặc mục đích bán/thuê để kiểm tra lại.
+error: >-
+  Mình chưa xử lý được yêu cầu này: {error}. Bạn thử gửi lại với dự án, diện tích, loại căn và mục đích bán/thuê nhé.
+default: >-
+  Mình đã nhận được yêu cầu. Bạn gửi thêm dự án, diện tích, loại căn và mục đích bán/thuê để mình hỗ trợ chính xác hơn.
